@@ -15,6 +15,7 @@ repositories {
 
 val junitVersion = "5.12.1"
 
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(22)
