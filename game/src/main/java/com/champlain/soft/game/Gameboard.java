@@ -33,6 +33,9 @@ public class Gameboard extends Application {
 
     private GridPane grid;
 
+    private int playerRow = 1;
+    private int playerCol = 1;
+
     @Override
     public void start(Stage stage) {
         loadImages();
@@ -46,6 +49,16 @@ public class Gameboard extends Application {
         root.setCenter(grid);
 
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case DOWN:  movePlayer( 1,  0); break;
+                case UP:    movePlayer(-1,  0); break;
+                case RIGHT: movePlayer( 0,  1); break;
+                case LEFT:  movePlayer( 0, -1); break;
+                default:    break;
+            }
+        });
 
         stage.setTitle("Rescue the Princess");
         stage.setScene(scene);
@@ -141,6 +154,21 @@ public class Gameboard extends Application {
         iv.setFitHeight(height);
         iv.setPreserveRatio(false);
         return iv;
+    }
+
+    private void movePlayer(int deltaRow, int deltaCol) {
+        int newRow = playerRow + deltaRow;
+        int newCol = playerCol + deltaCol;
+
+        if (matrix[newRow][newCol] == CellType.WALL) return;
+
+        matrix[playerRow][playerCol] = CellType.GRASS;
+
+        playerRow = newRow;
+        playerCol = newCol;
+        matrix[playerRow][playerCol] = CellType.PLAYER;
+
+        drawBoard(grid);
     }
 
     public static void main(String[] args) {
