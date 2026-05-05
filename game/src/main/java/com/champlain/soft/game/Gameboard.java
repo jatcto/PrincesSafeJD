@@ -3,6 +3,7 @@ package com.champlain.soft.game;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -162,6 +163,8 @@ public class Gameboard extends Application {
 
         if (matrix[newRow][newCol] == CellType.WALL) return;
 
+        CellType destination = matrix[newRow][newCol];
+
         matrix[playerRow][playerCol] = CellType.GRASS;
 
         playerRow = newRow;
@@ -169,6 +172,14 @@ public class Gameboard extends Application {
         matrix[playerRow][playerCol] = CellType.PLAYER;
 
         drawBoard(grid);
+
+        if (destination == CellType.PRINCESS) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Victory");
+            alert.setHeaderText(null);
+            alert.setContentText("You rescued the princess!");
+            alert.showAndWait();
+        }
     }
 
     public static void main(String[] args) {
