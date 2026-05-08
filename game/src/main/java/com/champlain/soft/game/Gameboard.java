@@ -36,6 +36,8 @@ public class Gameboard extends Application {
 
     private int playerRow = 1;
     private int playerCol = 1;
+    private int lives = 3;
+    private boolean gameOver = false;
 
     @Override
     public void start(Stage stage) {
@@ -158,6 +160,8 @@ public class Gameboard extends Application {
     }
 
     private void movePlayer(int deltaRow, int deltaCol) {
+        if (gameOver) return;
+
         int newRow = playerRow + deltaRow;
         int newCol = playerCol + deltaCol;
 
@@ -175,10 +179,27 @@ public class Gameboard extends Application {
 
         if (destination == CellType.PRINCESS) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Victory");
+            alert.setTitle("Mission Completed Daniel");
             alert.setHeaderText(null);
             alert.setContentText("You rescued the princess!");
             alert.showAndWait();
+            gameOver = true;
+        } else if (destination == CellType.BOMB) {
+            lives--;
+            if (lives > 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Boom Boom KABOOM");
+                alert.setHeaderText(null);
+                alert.setContentText("You hit a bomb! Lives left: " + lives);
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Game Over");
+                alert.setHeaderText(null);
+                alert.setContentText("You ran out of lives! Game over!");
+                alert.showAndWait();
+                gameOver = true;
+            }
         }
     }
 
